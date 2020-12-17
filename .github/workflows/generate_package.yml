@@ -43,6 +43,7 @@ jobs:
       run: |
         mkdir -p stdlib-fpm/src
         find stdlib/src -maxdepth 1 -iname "*.f90" -exec cp {} stdlib-fpm/src/ \;
+        cp stdlib/LICENSE stdlib-fpm/
 
     - name: Collect stdlib test programs
       run: |
