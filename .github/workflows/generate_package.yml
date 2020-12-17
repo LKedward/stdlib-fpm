@@ -15,14 +15,14 @@ jobs:
 
     steps:
     - name: Checkout stdlib code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
       with:
         repository: ${{ env.STDLIB_REPO }}
         ref: ${{ env.STDLIB_REV }}
         path: "stdlib"
 
     - name: Checkout fpm package template
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
       with:
         ref: package-template
         path: "stdlib-fpm"
