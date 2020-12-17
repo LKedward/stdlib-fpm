@@ -48,13 +48,14 @@ jobs:
       run: |
         mkdir -p stdlib-fpm/test
         find stdlib/src/tests -name "test_*.f90" -exec cp {} stdlib-fpm/test/ \;
+        find stdlib/src/tests -name "*.dat" -exec cp {} stdlib-fpm/ \;
+        ls -R
 
     - name: Source file workarounds for fpm
       working-directory: "stdlib-fpm"
       run: |
         rm test/test_always_fail.f90
         rm test/test_always_skip.f90
-        find stdlib/src/tests -name "*.dat" -exec cp {} stdlib-fpm/ \;
 
     - name: Install fpm latest release
       uses: fortran-lang/setup-fpm@v3
