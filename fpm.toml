@@ -1,1 +1,4 @@
 name="stdlib"
+license = "MIT"
+author = "stdlib contributors"
+copyright = "2020 stdlib contributors"
