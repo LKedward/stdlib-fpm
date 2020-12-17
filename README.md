@@ -1,6 +1,6 @@
 __Note: The contents of this repository are generated automatically from the [fortran-lang/stdlib](https://github.com/fortran-lang/stdlib) upstream project__
 
-# stdlib-fpm
+# stdlib-fpm (experimental)
 
 __An auto-generated mirror of the fortran-lang [standard library (stdlib)](https://github.com/fortran-lang/stdlib) structured as an [*fpm*](https://github.com/fortran-lang/fpm) package__
 
