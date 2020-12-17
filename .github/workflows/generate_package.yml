@@ -3,7 +3,7 @@ name: Generate package
 on: [push, pull_request, workflow_dispatch]
 
 env:
-  STDLIB_REPO: "https://github.com/fortran-lang/stdlib.git"
+  STDLIB_GITHUB: "fortran-lang/stdlib"
   STDLIB_REV: "7b246420d8a3fdad70f65f6de25f2f218ad33df5"
   CMAKE_URL: "https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3-Linux-x86_64.tar.gz"
   GCC_V: "10"
@@ -17,7 +17,7 @@ jobs:
     - name: Checkout stdlib code
       uses: actions/checkout@v2
       with:
-        repository: ${{ env.STDLIB_REPO }}
+        repository: ${{ env.STDLIB_GITHUB }}
         ref: ${{ env.STDLIB_REV }}
         path: "stdlib"
 
