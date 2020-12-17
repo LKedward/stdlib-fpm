@@ -1,0 +1,73 @@
+name: Generate package
+
+on: [push, pull_request, workflow_dispatch]
+
+env:
+  STDLIB_REPO: "https://github.com/fortran-lang/stdlib.git"
+  STDLIB_REV: "7b246420d8a3fdad70f65f6de25f2f218ad33df5"
+  CMAKE_URL: "https://github.com/Kitware/CMake/releases/download/v3.16.3/cmake-3.16.3-Linux-x86_64.tar.gz"
+  GCC_V: "10"
+  FYFLAGS: "-DMAXRANK=4"
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout stdlib code
+      uses: actions/checkout@v1
+      with:
+        repository: ${{ env.STDLIB_REPO }}
+        ref: ${{ env.STDLIB_REV }}
+        path: "stdlib"
+
+    - name: Checkout fpm package template
+      uses: actions/checkout@v1
+      with:
+        ref: package-template
+        path: "stdlib-fpm"
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.x
+
+    - name: Install fypp
+      run: pip install --upgrade fypp
+
+    - name: Preprocess library sources
+      working-directory: "stdlib"
+      run: ls src/*.fypp | cut -f1 -d. | xargs -i{} fypp {}.fypp {}.f90 ${{ env.FYFLAGS }}
+
+    - name: Collect stdlib library sources
+      run: |
+        mkdir -p stdlib-fpm/src
+        find stdlib/src -name "stdlib_*.f90" -exec cp {} stdlib-fpm/src/ \;
+
+    - name: Collect stdlib test programs
+      run: |
+        mkdir -p stdlib-fpm/test
+        find stdlib/src/tests -name "test_*.f90" -exec cp {} stdlib-fpm/test/ \;
+
+    - name: Source file workarounds for fpm
+      working-directory: "stdlib-fpm"
+      run: |
+        rm test/test_always_fail.f90
+        rm test/test_always_skip.f90
+        find stdlib/src/tests -name "*.dat" -exec cp {} stdlib-fpm/ \;
+
+    - name: Install fpm latest release
+      uses: fortran-lang/setup-fpm@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Run fpm test
+      working-directory: "stdlib-fpm"
+      run: fpm test
+    
+    - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: main
+          FOLDER: stdlib-fpm
