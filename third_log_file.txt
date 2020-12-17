@@ -1,0 +1,15 @@
+2020-12-17 14:37:03.918: N/A % TEST_STDLIB_LOGGER: ERROR: This message
+    should be output to five files and not to OUTPUT_UNIT, limited to
+    72 columns width, preceded by no blank line, then by a time stamp,
+    then by MODULE % PROCEDURE, be prefixed by ERROR and be indented on
+    subsequent lines by 4 columns, and finish with STAT and.ERRMSG
+    lines.
+    With stat = 0
+    With errmsg = "This is a long ERRMSG intended to test formatting of
+    the ERRMSG when it is more than 72 columns wide."
+2020-12-17 14:37:03.918
+dummy.txt:0:25
+
+This text should be written to UNIT1 and UNIT3 and not to OUTPUT_UNIT.
+                        1
+Error: There is no real error here.
