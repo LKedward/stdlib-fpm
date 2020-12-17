@@ -70,8 +70,10 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Run fpm test
-      working-directory: "stdlib-fpm"
-      run: fpm test
+      run: |
+        cp -r stdlib-fpm stdlib-fpm-test
+        cd stdlib-fpm-test
+        fpm test
     
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
