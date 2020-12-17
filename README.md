@@ -32,3 +32,10 @@ stdlib = { git = "https://github.com/LKedward/stdlib-fpm.git" }
   - `test_always_skip.f90`
   - `stats/test_mean_f03.f90`
 
+## More information
+
+- See <https://stdlib.fortran-lang.org/> for API documentation
+
+- See <https://github.com/fortran-lang/stdlib> for reporting bugs and contributing to *stdlib*
+
+- See <https://github.com/fortran-lang/fpm> for more information on using *fpm*
