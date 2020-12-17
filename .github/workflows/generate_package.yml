@@ -42,7 +42,7 @@ jobs:
     - name: Collect stdlib library sources
       run: |
         mkdir -p stdlib-fpm/src
-        find stdlib/src -iname "stdlib_*.f90" -exec cp {} stdlib-fpm/src/ \;
+        find stdlib/src -maxdepth 1 -iname "*.f90" -exec cp {} stdlib-fpm/src/ \;
 
     - name: Collect stdlib test programs
       run: |
