@@ -4,7 +4,6 @@ on: [push, pull_request, workflow_dispatch]
 
 env:
   STDLIB_GITHUB: "fortran-lang/stdlib"
-  STDLIB_REV: "7b246420d8a3fdad70f65f6de25f2f218ad33df5"
   GCC_V: "10"
 
 jobs:
@@ -12,17 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout current repo
+      uses: actions/checkout@v2
+      with:
+        path: "stdlib-fpm"
+
+    - name: Read stdlib revision
+      run: cat stdlib-fpm/stdlib-revision >> $GITHUB_ENV
+
     - name: Checkout stdlib code
       uses: actions/checkout@v2
       with:
         repository: ${{ env.STDLIB_GITHUB }}
         ref: ${{ env.STDLIB_REV }}
         path: "stdlib"
-
-    - name: Checkout current repo
-      uses: actions/checkout@v2
-      with:
-        path: "stdlib-fpm"
 
     - name: Set up Python 3.x
       uses: actions/setup-python@v1
