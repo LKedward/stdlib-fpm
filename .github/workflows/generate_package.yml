@@ -33,7 +33,7 @@ jobs:
       run: pip install --upgrade fypp
 
     - name: Generate stdlib-fpm package
-      run: ./stdlib-fpm/generate-package.sh
+      run: ./stdlib-fpm/generate-package.sh stdlib
 
     - name: Install GFortran
       run: |
