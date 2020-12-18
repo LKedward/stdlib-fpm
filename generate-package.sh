@@ -25,9 +25,9 @@ find $SRCDIR/src/tests -name "*.dat" -exec cp {} $DESTDIR/ \;
 cp $SRCDIR/LICENSE $DESTDIR/
 
 # Source file workarounds for fpm
-rm test/test_always_fail.f90
-rm test/test_always_skip.f90
-rm test/test_mean_f03.f90
+rm $DESTDIR/test/test_always_fail.f90
+rm $DESTDIR/test/test_always_skip.f90
+rm $DESTDIR/test/test_mean_f03.f90
 
 # List stdlib-fpm package contents
 ls -R $DESTDIR
