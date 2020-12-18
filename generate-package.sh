@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 #
+set -ex
 
 SRCDIR=$1
 DESTDIR="$1-fpm"
