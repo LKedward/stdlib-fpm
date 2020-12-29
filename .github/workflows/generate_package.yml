@@ -1,6 +1,11 @@
 name: Generate package
 
-on: [push, pull_request, workflow_dispatch]
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
 
 env:
   STDLIB_GITHUB: "fortran-lang/stdlib"
