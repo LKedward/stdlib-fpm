@@ -22,8 +22,6 @@ stdlib = { git = "https://github.com/LKedward/stdlib-fpm.git" }
 
 ## Release notes (important)
 
-- The library __cannot be built in *release* mode__  (`fpm build --release`)
-
 - Generic procedures have a __maximum array rank of 4__
 
 - The following tests from the upstream repository are not included here:
