@@ -28,6 +28,7 @@ cp $SRCDIR/LICENSE $DESTDIR/
 rm $DESTDIR/test/test_always_fail.f90
 rm $DESTDIR/test/test_always_skip.f90
 rm $DESTDIR/test/test_mean_f03.f90
+rm $DESTDIR/src/common.f90
 
 # List stdlib-fpm package contents
 ls -R $DESTDIR
