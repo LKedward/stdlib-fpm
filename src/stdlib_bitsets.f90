@@ -5,7 +5,7 @@ module stdlib_bitsets
 !! having the sign bit set.
 !!([Specification](../page/specs/stdlib_bitsets.html))
 
-    use :: stdlib_kinds, only:  &
+    use stdlib_kinds, only:  &
            bits_kind  => int32, & ! If changed change also max_digits, and
            block_kind => int64, & ! overflow_bits
            int8,                &
