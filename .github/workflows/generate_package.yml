@@ -14,6 +14,10 @@ env:
 jobs:
   Build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        haskell: [true, false]
 
     steps:
     - name: Checkout current repo
@@ -52,6 +56,7 @@ jobs:
       uses: fortran-lang/setup-fpm@v3
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        use-haskell: ${{ matrix.haskell }}
 
     - name: Run fpm test
       run: |

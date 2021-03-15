@@ -29,6 +29,7 @@ rm $DESTDIR/test/test_always_fail.f90
 rm $DESTDIR/test/test_always_skip.f90
 rm $DESTDIR/test/test_mean_f03.f90
 rm $DESTDIR/src/common.f90
+git apply --directory=$DESTDIR $DESTDIR/1-bitsets-use-stmt.patch
 
 # List stdlib-fpm package contents
 ls -R $DESTDIR
