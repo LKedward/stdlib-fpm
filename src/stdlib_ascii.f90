@@ -1,8 +1,10 @@
+
 !> The `stdlib_ascii` module provides procedures for handling and manipulating
 !> intrinsic character variables and constants.
 !>
 !> The specification of this module is available [here](../page/specs/stdlib_ascii.html).
 module stdlib_ascii
+    use stdlib_kinds, only : int8, int16, int32, int64
 
     implicit none
     private
@@ -17,6 +19,21 @@ module stdlib_ascii
 
     ! Character conversion functions
     public :: to_lower, to_upper, to_title, reverse
+    public :: to_string
+
+    !> Version: experimental
+    !>
+    !> Create a character string representing the value of the provided variable.
+    interface to_string
+        module procedure :: to_string_integer_int8
+        module procedure :: to_string_logical_int8
+        module procedure :: to_string_integer_int16
+        module procedure :: to_string_logical_int16
+        module procedure :: to_string_integer_int32
+        module procedure :: to_string_logical_int32
+        module procedure :: to_string_integer_int64
+        module procedure :: to_string_logical_int64
+    end interface to_string
 
     ! All control characters in the ASCII table (see www.asciitable.com).
     character(len=1), public, parameter :: NUL = achar(int(z'00')) !! Null
@@ -311,5 +328,171 @@ contains
         end do
 
     end function reverse
+
+    !> Represent an integer of kind int8 as character sequence
+    pure function to_string_integer_int8(val) result(string)
+        integer, parameter :: ik = int8
+        integer(ik), intent(in) :: val
+        character(len=:), allocatable :: string
+        integer, parameter :: buffer_len = range(val)+2
+        character(len=buffer_len) :: buffer
+        integer :: pos
+        integer(ik) :: n
+        character(len=1), parameter :: numbers(0:9) = &
+            ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+        if (val == 0_ik) then
+            string = numbers(0)
+            return
+        end if
+
+        n = abs(val)
+        buffer = ""
+
+        pos = buffer_len + 1
+        do while (n > 0_ik)
+            pos = pos - 1
+            buffer(pos:pos) = numbers(mod(n, 10_ik))
+            n = n/10_ik
+        end do
+        if (val < 0_ik) then
+            pos = pos - 1
+            buffer(pos:pos) = '-'
+        end if
+
+        string = buffer(pos:)
+    end function to_string_integer_int8
+    !> Represent an integer of kind int16 as character sequence
+    pure function to_string_integer_int16(val) result(string)
+        integer, parameter :: ik = int16
+        integer(ik), intent(in) :: val
+        character(len=:), allocatable :: string
+        integer, parameter :: buffer_len = range(val)+2
+        character(len=buffer_len) :: buffer
+        integer :: pos
+        integer(ik) :: n
+        character(len=1), parameter :: numbers(0:9) = &
+            ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+        if (val == 0_ik) then
+            string = numbers(0)
+            return
+        end if
+
+        n = abs(val)
+        buffer = ""
+
+        pos = buffer_len + 1
+        do while (n > 0_ik)
+            pos = pos - 1
+            buffer(pos:pos) = numbers(mod(n, 10_ik))
+            n = n/10_ik
+        end do
+        if (val < 0_ik) then
+            pos = pos - 1
+            buffer(pos:pos) = '-'
+        end if
+
+        string = buffer(pos:)
+    end function to_string_integer_int16
+    !> Represent an integer of kind int32 as character sequence
+    pure function to_string_integer_int32(val) result(string)
+        integer, parameter :: ik = int32
+        integer(ik), intent(in) :: val
+        character(len=:), allocatable :: string
+        integer, parameter :: buffer_len = range(val)+2
+        character(len=buffer_len) :: buffer
+        integer :: pos
+        integer(ik) :: n
+        character(len=1), parameter :: numbers(0:9) = &
+            ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+        if (val == 0_ik) then
+            string = numbers(0)
+            return
+        end if
+
+        n = abs(val)
+        buffer = ""
+
+        pos = buffer_len + 1
+        do while (n > 0_ik)
+            pos = pos - 1
+            buffer(pos:pos) = numbers(mod(n, 10_ik))
+            n = n/10_ik
+        end do
+        if (val < 0_ik) then
+            pos = pos - 1
+            buffer(pos:pos) = '-'
+        end if
+
+        string = buffer(pos:)
+    end function to_string_integer_int32
+    !> Represent an integer of kind int64 as character sequence
+    pure function to_string_integer_int64(val) result(string)
+        integer, parameter :: ik = int64
+        integer(ik), intent(in) :: val
+        character(len=:), allocatable :: string
+        integer, parameter :: buffer_len = range(val)+2
+        character(len=buffer_len) :: buffer
+        integer :: pos
+        integer(ik) :: n
+        character(len=1), parameter :: numbers(0:9) = &
+            ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+        if (val == 0_ik) then
+            string = numbers(0)
+            return
+        end if
+
+        n = abs(val)
+        buffer = ""
+
+        pos = buffer_len + 1
+        do while (n > 0_ik)
+            pos = pos - 1
+            buffer(pos:pos) = numbers(mod(n, 10_ik))
+            n = n/10_ik
+        end do
+        if (val < 0_ik) then
+            pos = pos - 1
+            buffer(pos:pos) = '-'
+        end if
+
+        string = buffer(pos:)
+    end function to_string_integer_int64
+
+    !> Represent an logical of kind int8 as character sequence
+    pure function to_string_logical_int8(val) result(string)
+        integer, parameter :: ik = int8
+        logical(ik), intent(in) :: val
+        character(len=1) :: string
+
+        string = merge("T", "F", val)
+    end function to_string_logical_int8
+    !> Represent an logical of kind int16 as character sequence
+    pure function to_string_logical_int16(val) result(string)
+        integer, parameter :: ik = int16
+        logical(ik), intent(in) :: val
+        character(len=1) :: string
+
+        string = merge("T", "F", val)
+    end function to_string_logical_int16
+    !> Represent an logical of kind int32 as character sequence
+    pure function to_string_logical_int32(val) result(string)
+        integer, parameter :: ik = int32
+        logical(ik), intent(in) :: val
+        character(len=1) :: string
+
+        string = merge("T", "F", val)
+    end function to_string_logical_int32
+    !> Represent an logical of kind int64 as character sequence
+    pure function to_string_logical_int64(val) result(string)
+        integer, parameter :: ik = int64
+        logical(ik), intent(in) :: val
+        character(len=1) :: string
+
+        string = merge("T", "F", val)
+    end function to_string_logical_int64
 
 end module stdlib_ascii

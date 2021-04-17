@@ -13,8 +13,8 @@
 !> The specification of this module is available [here](../page/specs/stdlib_string_type.html).
 module stdlib_string_type
     use stdlib_ascii, only: to_lower_ => to_lower, to_upper_ => to_upper, &
-                            to_title_ => to_title, reverse_ => reverse
-
+       & to_title_ => to_title, reverse_ => reverse, to_string
+    use stdlib_kinds, only : int8, int16, int32, int64
     implicit none
     private
 
@@ -44,6 +44,14 @@ module stdlib_string_type
     !> Constructor for new string instances
     interface string_type
         module procedure :: new_string
+        module procedure :: new_string_from_integer_int8
+        module procedure :: new_string_from_logical_int8
+        module procedure :: new_string_from_integer_int16
+        module procedure :: new_string_from_logical_int16
+        module procedure :: new_string_from_integer_int32
+        module procedure :: new_string_from_logical_int32
+        module procedure :: new_string_from_integer_int64
+        module procedure :: new_string_from_logical_int64
     end interface string_type
 
 
@@ -350,6 +358,56 @@ contains
             new%raw = string
         end if
     end function new_string
+
+    !> Constructor for new string instances from an integer of kind int8.
+    elemental function new_string_from_integer_int8(val) result(new)
+        integer(int8), intent(in) :: val
+        type(string_type) :: new
+        new%raw = to_string(val)
+    end function new_string_from_integer_int8
+    !> Constructor for new string instances from an integer of kind int16.
+    elemental function new_string_from_integer_int16(val) result(new)
+        integer(int16), intent(in) :: val
+        type(string_type) :: new
+        new%raw = to_string(val)
+    end function new_string_from_integer_int16
+    !> Constructor for new string instances from an integer of kind int32.
+    elemental function new_string_from_integer_int32(val) result(new)
+        integer(int32), intent(in) :: val
+        type(string_type) :: new
+        new%raw = to_string(val)
+    end function new_string_from_integer_int32
+    !> Constructor for new string instances from an integer of kind int64.
+    elemental function new_string_from_integer_int64(val) result(new)
+        integer(int64), intent(in) :: val
+        type(string_type) :: new
+        new%raw = to_string(val)
+    end function new_string_from_integer_int64
+
+    !> Constructor for new string instances from a logical of kind int8.
+    elemental function new_string_from_logical_int8(val) result(new)
+        logical(int8), intent(in) :: val
+        type(string_type) :: new
+        new%raw = to_string(val)
+    end function new_string_from_logical_int8
+    !> Constructor for new string instances from a logical of kind int16.
+    elemental function new_string_from_logical_int16(val) result(new)
+        logical(int16), intent(in) :: val
+        type(string_type) :: new
+        new%raw = to_string(val)
+    end function new_string_from_logical_int16
+    !> Constructor for new string instances from a logical of kind int32.
+    elemental function new_string_from_logical_int32(val) result(new)
+        logical(int32), intent(in) :: val
+        type(string_type) :: new
+        new%raw = to_string(val)
+    end function new_string_from_logical_int32
+    !> Constructor for new string instances from a logical of kind int64.
+    elemental function new_string_from_logical_int64(val) result(new)
+        logical(int64), intent(in) :: val
+        type(string_type) :: new
+        new%raw = to_string(val)
+    end function new_string_from_logical_int64
 
 
     !> Assign a character sequence to a string.
