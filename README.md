@@ -20,9 +20,11 @@ To use *stdlib* within your [*fpm*](https://github.com/fortran-lang/fpm) project
 stdlib = { git = "https://github.com/LKedward/stdlib-fpm.git" }
 ```
 
-## Release notes (important)
+## Release notes
 
 - Generic procedures have a __maximum array rank of 4__
+
+- The [legacy Haskell implementation](https://github.com/fortran-lang/fpm-haskell) of `fpm` is __not supported__
 
 - The following tests from the upstream repository are not included here:
 
