@@ -14,10 +14,6 @@ env:
 jobs:
   Build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        haskell: [true, false]
 
     steps:
     - name: Checkout current repo
@@ -56,14 +52,19 @@ jobs:
       uses: fortran-lang/setup-fpm@v3
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        use-haskell: ${{ matrix.haskell }}
 
     - name: Run fpm test
       run: |
         cp -r stdlib-fpm stdlib-fpm-test
         cd stdlib-fpm-test
         fpm test
-    
+
+    - name: Run fpm test (release)
+      run: |
+        cp -r stdlib-fpm stdlib-fpm-test-release
+        cd stdlib-fpm-test-release
+        fpm test --profile release
+
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       if: github.event_name != 'pull_request'
