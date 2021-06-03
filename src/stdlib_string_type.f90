@@ -456,7 +456,11 @@ contains
         type(string_type), intent(in) :: string
         integer :: ich
 
-        ich = merge(ichar(string%raw), 0, allocated(string%raw))
+        if (allocated(string%raw) .and. len(string) > 0) then
+          ich = ichar(string%raw(1:1))
+        else
+          ich = 0
+        end if
 
     end function ichar_string
 
@@ -466,7 +470,11 @@ contains
         type(string_type), intent(in) :: string
         integer :: ich
 
-        ich = merge(iachar(string%raw), 0, allocated(string%raw))
+        if (allocated(string%raw) .and. len(string) > 0) then
+          ich = iachar(string%raw(1:1))
+        else
+          ich = 0
+        end if
 
     end function iachar_string
 
@@ -606,8 +614,11 @@ contains
         logical, intent(in), optional :: back
         integer :: pos
 
-        pos = index(maybe(string), maybe(substring), &
-            merge(back, .false., present(back)))
+        if (present(back)) then
+          pos = index(maybe(string), maybe(substring), back)
+        else
+          pos = index(maybe(string), maybe(substring), .false.)
+        end if
 
     end function index_string_string
 
@@ -619,8 +630,11 @@ contains
         logical, intent(in), optional :: back
         integer :: pos
 
-        pos = index(maybe(string), substring, &
-            merge(back, .false., present(back)))
+        if (present(back)) then
+          pos = index(maybe(string), substring, back)
+        else
+          pos = index(maybe(string), substring, .false.)
+        end if
 
     end function index_string_char
 
@@ -632,8 +646,11 @@ contains
         logical, intent(in), optional :: back
         integer :: pos
 
-        pos = index(string, maybe(substring), &
-            merge(back, .false., present(back)))
+        if (present(back)) then
+          pos = index(string, maybe(substring), back)
+        else
+          pos = index(string, maybe(substring), .false.)
+        end if
 
     end function index_char_string
 
@@ -647,8 +664,11 @@ contains
         logical, intent(in), optional :: back
         integer :: pos
 
-        pos = scan(maybe(string), maybe(set), &
-            merge(back, .false., present(back)))
+        if (present(back)) then
+          pos = scan(maybe(string), maybe(set), back)
+        else
+          pos = scan(maybe(string), maybe(set), .false.)
+        end if
 
     end function scan_string_string
 
@@ -660,8 +680,11 @@ contains
         logical, intent(in), optional :: back
         integer :: pos
 
-        pos = scan(maybe(string), set, &
-            merge(back, .false., present(back)))
+        if (present(back)) then
+          pos = scan(maybe(string), set, back)
+        else
+          pos = scan(maybe(string), set, .false.)
+        end if
 
     end function scan_string_char
 
@@ -673,8 +696,11 @@ contains
         logical, intent(in), optional :: back
         integer :: pos
 
-        pos = scan(string, maybe(set), &
-            merge(back, .false., present(back)))
+        if (present(back)) then
+          pos = scan(string, maybe(set), back)
+        else
+          pos = scan(string, maybe(set), .false.)
+        end if
 
     end function scan_char_string
 
@@ -688,8 +714,11 @@ contains
         logical, intent(in), optional :: back
         integer :: pos
 
-        pos = verify(maybe(string), maybe(set), &
-            merge(back, .false., present(back)))
+        if (present(back)) then
+          pos = verify(maybe(string), maybe(set), back)
+        else
+          pos = verify(maybe(string), maybe(set), .false.)
+        end if
 
     end function verify_string_string
 
@@ -702,8 +731,11 @@ contains
         logical, intent(in), optional :: back
         integer :: pos
 
-        pos = verify(maybe(string), set, &
-            merge(back, .false., present(back)))
+        if (present(back)) then
+          pos = verify(maybe(string), set, back)
+        else
+          pos = verify(maybe(string), set, .false.)
+        end if
 
     end function verify_string_char
 
@@ -716,8 +748,11 @@ contains
         logical, intent(in), optional :: back
         integer :: pos
 
-        pos = verify(string, maybe(set), &
-            merge(back, .false., present(back)))
+        if (present(back)) then
+          pos = verify(string, maybe(set), back)
+        else
+          pos = verify(string, maybe(set), .false.)
+        end if
 
     end function verify_char_string
 
