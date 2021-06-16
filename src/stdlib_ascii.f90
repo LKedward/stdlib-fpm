@@ -4,7 +4,7 @@
 !>
 !> The specification of this module is available [here](../page/specs/stdlib_ascii.html).
 module stdlib_ascii
-    use stdlib_kinds, only : int8, int16, int32, int64
+    use stdlib_kinds, only : int8, int16, int32, int64, lk, c_bool
 
     implicit none
     private
@@ -26,13 +26,11 @@ module stdlib_ascii
     !> Create a character string representing the value of the provided variable.
     interface to_string
         module procedure :: to_string_integer_int8
-        module procedure :: to_string_logical_int8
         module procedure :: to_string_integer_int16
-        module procedure :: to_string_logical_int16
         module procedure :: to_string_integer_int32
-        module procedure :: to_string_logical_int32
         module procedure :: to_string_integer_int64
-        module procedure :: to_string_logical_int64
+        module procedure :: to_string_logical_lk
+        module procedure :: to_string_logical_c_bool
     end interface to_string
 
     ! All control characters in the ASCII table (see www.asciitable.com).
@@ -496,37 +494,21 @@ contains
         string = buffer(pos:)
     end function to_string_integer_int64
 
-    !> Represent an logical of kind int8 as character sequence
-    pure function to_string_logical_int8(val) result(string)
-        integer, parameter :: ik = int8
+    !> Represent an logical of kind lk as character sequence
+    pure function to_string_logical_lk(val) result(string)
+        integer, parameter :: ik = lk
         logical(ik), intent(in) :: val
         character(len=1) :: string
 
         string = merge("T", "F", val)
-    end function to_string_logical_int8
-    !> Represent an logical of kind int16 as character sequence
-    pure function to_string_logical_int16(val) result(string)
-        integer, parameter :: ik = int16
+    end function to_string_logical_lk
+    !> Represent an logical of kind c_bool as character sequence
+    pure function to_string_logical_c_bool(val) result(string)
+        integer, parameter :: ik = c_bool
         logical(ik), intent(in) :: val
         character(len=1) :: string
 
         string = merge("T", "F", val)
-    end function to_string_logical_int16
-    !> Represent an logical of kind int32 as character sequence
-    pure function to_string_logical_int32(val) result(string)
-        integer, parameter :: ik = int32
-        logical(ik), intent(in) :: val
-        character(len=1) :: string
-
-        string = merge("T", "F", val)
-    end function to_string_logical_int32
-    !> Represent an logical of kind int64 as character sequence
-    pure function to_string_logical_int64(val) result(string)
-        integer, parameter :: ik = int64
-        logical(ik), intent(in) :: val
-        character(len=1) :: string
-
-        string = merge("T", "F", val)
-    end function to_string_logical_int64
+    end function to_string_logical_c_bool
 
 end module stdlib_ascii

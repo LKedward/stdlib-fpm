@@ -14,7 +14,7 @@
 module stdlib_string_type
     use stdlib_ascii, only: to_lower_ => to_lower, to_upper_ => to_upper, &
        & to_title_ => to_title, to_sentence_ => to_sentence, reverse_ => reverse, to_string
-    use stdlib_kinds, only : int8, int16, int32, int64
+    use stdlib_kinds, only : int8, int16, int32, int64, lk, c_bool
     implicit none
     private
 
@@ -45,13 +45,11 @@ module stdlib_string_type
     interface string_type
         module procedure :: new_string
         module procedure :: new_string_from_integer_int8
-        module procedure :: new_string_from_logical_int8
         module procedure :: new_string_from_integer_int16
-        module procedure :: new_string_from_logical_int16
         module procedure :: new_string_from_integer_int32
-        module procedure :: new_string_from_logical_int32
         module procedure :: new_string_from_integer_int64
-        module procedure :: new_string_from_logical_int64
+        module procedure :: new_string_from_logical_lk
+        module procedure :: new_string_from_logical_c_bool
     end interface string_type
 
 
@@ -392,30 +390,18 @@ contains
         new%raw = to_string(val)
     end function new_string_from_integer_int64
 
-    !> Constructor for new string instances from a logical of kind int8.
-    elemental function new_string_from_logical_int8(val) result(new)
-        logical(int8), intent(in) :: val
+    !> Constructor for new string instances from a logical of kind lk.
+    elemental function new_string_from_logical_lk(val) result(new)
+        logical(lk), intent(in) :: val
         type(string_type) :: new
         new%raw = to_string(val)
-    end function new_string_from_logical_int8
-    !> Constructor for new string instances from a logical of kind int16.
-    elemental function new_string_from_logical_int16(val) result(new)
-        logical(int16), intent(in) :: val
+    end function new_string_from_logical_lk
+    !> Constructor for new string instances from a logical of kind c_bool.
+    elemental function new_string_from_logical_c_bool(val) result(new)
+        logical(c_bool), intent(in) :: val
         type(string_type) :: new
         new%raw = to_string(val)
-    end function new_string_from_logical_int16
-    !> Constructor for new string instances from a logical of kind int32.
-    elemental function new_string_from_logical_int32(val) result(new)
-        logical(int32), intent(in) :: val
-        type(string_type) :: new
-        new%raw = to_string(val)
-    end function new_string_from_logical_int32
-    !> Constructor for new string instances from a logical of kind int64.
-    elemental function new_string_from_logical_int64(val) result(new)
-        logical(int64), intent(in) :: val
-        type(string_type) :: new
-        new%raw = to_string(val)
-    end function new_string_from_logical_int64
+    end function new_string_from_logical_c_bool
 
 
     !> Assign a character sequence to a string.
@@ -482,9 +468,7 @@ contains
     !> Return the character sequence represented by the string.
     pure function char_string(string) result(character_string)
         type(string_type), intent(in) :: string
-        ! GCC 8 and older cannot evaluate pure derived type procedures here
-        !character(len=len(string)) :: character_string
-        character(len=:), allocatable :: character_string
+        character(len=len(string)) :: character_string
 
         character_string = maybe(string)
 
@@ -1276,9 +1260,7 @@ contains
     !> Safely return the character sequences represented by the string
     pure function maybe(string) result(maybe_string)
         type(string_type), intent(in) :: string
-        ! GCC 8 and older cannot evaluate pure derived type procedures here
-        !character(len=len(string)) :: maybe_string
-        character(len=:), allocatable :: maybe_string
+        character(len=len(string)) :: maybe_string
         if (allocated(string%raw)) then
             maybe_string = string%raw
         else

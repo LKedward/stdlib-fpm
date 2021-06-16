@@ -267,7 +267,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -607,7 +608,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -947,7 +949,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -1287,7 +1290,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -1627,7 +1631,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -1967,7 +1972,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -2307,7 +2313,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -2647,7 +2654,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -2987,7 +2995,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) < key )
+                do while( i >= 0 )
+                    if ( array(i) >= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -3327,7 +3336,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) < key )
+                do while( i >= 0 )
+                    if ( array(i) >= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -3667,7 +3677,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) < key )
+                do while( i >= 0 )
+                    if ( array(i) >= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -4007,7 +4018,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) < key )
+                do while( i >= 0 )
+                    if ( array(i) >= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -4347,7 +4359,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) < key )
+                do while( i >= 0 )
+                    if ( array(i) >= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -4687,7 +4700,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) < key )
+                do while( i >= 0 )
+                    if ( array(i) >= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -5027,7 +5041,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) < key )
+                do while( i >= 0 )
+                    if ( array(i) >= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -5367,7 +5382,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) < key )
+                do while( i >= 0 )
+                    if ( array(i) >= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -5724,7 +5740,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do
@@ -6060,7 +6077,8 @@ contains
             do j=1, size(array, kind=int_size)-1
                 key = array(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) < key )
+                do while( i >= 0 )
+                    if ( array(i) >= key ) exit
                     array(i+1) = array(i)
                     i = i - 1
                 end do

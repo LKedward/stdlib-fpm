@@ -174,7 +174,8 @@ contains
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     index(i+1) = index(i)
                     i = i - 1
@@ -588,7 +589,8 @@ contains
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     index(i+1) = index(i)
                     i = i - 1
@@ -1002,7 +1004,8 @@ contains
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     index(i+1) = index(i)
                     i = i - 1
@@ -1416,7 +1419,8 @@ contains
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     index(i+1) = index(i)
                     i = i - 1
@@ -1830,7 +1834,8 @@ contains
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     index(i+1) = index(i)
                     i = i - 1
@@ -2244,7 +2249,8 @@ contains
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     index(i+1) = index(i)
                     i = i - 1
@@ -2658,7 +2664,8 @@ contains
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     index(i+1) = index(i)
                     i = i - 1
@@ -3072,7 +3079,8 @@ contains
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     index(i+1) = index(i)
                     i = i - 1
@@ -3479,7 +3487,8 @@ contains
                 key = array(j)
                 key_index = index(j)
                 i = j - 1
-                do while( i >= 0 .and. array(i) > key )
+                do while( i >= 0 )
+                    if ( array(i) <= key ) exit
                     array(i+1) = array(i)
                     index(i+1) = index(i)
                     i = i - 1
