@@ -9,6 +9,7 @@ module stdlib_linalg
   public :: diag
   public :: eye
   public :: trace
+  public :: outer_product
 
   interface diag
     !! version: experimental
@@ -204,6 +205,7 @@ module stdlib_linalg
       end function diag_iint64_mat_k
   end interface
 
+
   ! Matrix trace
   interface trace
     !! version: experimental
@@ -221,6 +223,55 @@ module stdlib_linalg
       module procedure trace_iint32
       module procedure trace_iint64
   end interface
+
+
+  ! Outer product (of two vectors)
+  interface outer_product
+    !! version: experimental
+    !!
+    !! Computes the outer product of two vectors, returning a rank-2 array
+    !! ([Specification](../page/specs/stdlib_linalg.html#description_3))
+      pure module function outer_product_rsp(u, v) result(res)
+        real(sp), intent(in) :: u(:), v(:)
+        real(sp) :: res(size(u),size(v))
+      end function outer_product_rsp
+      pure module function outer_product_rdp(u, v) result(res)
+        real(dp), intent(in) :: u(:), v(:)
+        real(dp) :: res(size(u),size(v))
+      end function outer_product_rdp
+      pure module function outer_product_rqp(u, v) result(res)
+        real(qp), intent(in) :: u(:), v(:)
+        real(qp) :: res(size(u),size(v))
+      end function outer_product_rqp
+      pure module function outer_product_csp(u, v) result(res)
+        complex(sp), intent(in) :: u(:), v(:)
+        complex(sp) :: res(size(u),size(v))
+      end function outer_product_csp
+      pure module function outer_product_cdp(u, v) result(res)
+        complex(dp), intent(in) :: u(:), v(:)
+        complex(dp) :: res(size(u),size(v))
+      end function outer_product_cdp
+      pure module function outer_product_cqp(u, v) result(res)
+        complex(qp), intent(in) :: u(:), v(:)
+        complex(qp) :: res(size(u),size(v))
+      end function outer_product_cqp
+      pure module function outer_product_iint8(u, v) result(res)
+        integer(int8), intent(in) :: u(:), v(:)
+        integer(int8) :: res(size(u),size(v))
+      end function outer_product_iint8
+      pure module function outer_product_iint16(u, v) result(res)
+        integer(int16), intent(in) :: u(:), v(:)
+        integer(int16) :: res(size(u),size(v))
+      end function outer_product_iint16
+      pure module function outer_product_iint32(u, v) result(res)
+        integer(int32), intent(in) :: u(:), v(:)
+        integer(int32) :: res(size(u),size(v))
+      end function outer_product_iint32
+      pure module function outer_product_iint64(u, v) result(res)
+        integer(int64), intent(in) :: u(:), v(:)
+        integer(int64) :: res(size(u),size(v))
+      end function outer_product_iint64
+  end interface outer_product
 
 contains
 

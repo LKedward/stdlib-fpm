@@ -11,6 +11,8 @@ module stdlib_quadrature
     public :: trapz_weights
     public :: simps
     public :: simps_weights
+    public :: gauss_legendre
+    public :: gauss_legendre_lobatto
 
 
     interface trapz
@@ -139,6 +141,28 @@ module stdlib_quadrature
     end interface simps_weights
 
 
+    interface gauss_legendre
+        !! version: experimental
+        !!
+        !! Computes Gauss-Legendre quadrature nodes and weights.
+        pure module subroutine gauss_legendre_fp64 (x, w, interval)
+            real(dp), intent(out) :: x(:), w(:)
+            real(dp), intent(in), optional :: interval(2)
+        end subroutine
+    end interface gauss_legendre
+
+
+    interface gauss_legendre_lobatto
+        !! version: experimental
+        !!
+        !! Computes Gauss-Legendre-Lobatto quadrature nodes and weights.
+        pure module subroutine gauss_legendre_lobatto_fp64 (x, w, interval)
+            real(dp), intent(out) :: x(:), w(:)
+            real(dp), intent(in), optional :: interval(2)
+        end subroutine
+    end interface gauss_legendre_lobatto
+
+
     ! Interface for a simple f(x)-style integrand function.
     ! Could become fancier as we learn about the performance
     ! ramifications of different ways to do callbacks.
@@ -159,5 +183,7 @@ module stdlib_quadrature
             real(qp) :: f
         end function integrand_qp
     end interface
+
+
 
 end module stdlib_quadrature
