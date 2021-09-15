@@ -1,4 +1,10 @@
-__Note: The contents of this repository are generated automatically from the [fortran-lang/stdlib](https://github.com/fortran-lang/stdlib) upstream project__
+# THIS REPOSITORY IS ARCHIVED
+
+### You can now use stdlib with fpm using the upstream [standard library (stdlib)](https://github.com/fortran-lang/stdlib) repository.
+See [here](https://github.com/fortran-lang/stdlib#build-with-fortran-langfpm) for instructions.
+
+
+---
 
 # stdlib-fpm
 
