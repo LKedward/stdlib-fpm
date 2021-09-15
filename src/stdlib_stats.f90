@@ -7,14 +7,14 @@ module stdlib_stats
   implicit none
   private
   ! Public API
-  public :: corr, cov, mean, moment, var
+  public :: corr, cov, mean, median, moment, var
 
 
   interface corr
     !! version: experimental
     !!
     !! Pearson correlation of array elements
-    !! ([Specification](../page/specs/stdlib_stats.html#description))
+    !! ([Specification](../page/specs/stdlib_stats.html#corr-pearson-correlation-of-array-elements))
       module function corr_1_rsp_rsp(x, dim, mask) result(res)
         real(sp), intent(in) :: x(:)
         integer, intent(in) :: dim
@@ -290,7 +290,7 @@ module stdlib_stats
     !! version: experimental
     !!
     !! Covariance of array elements
-    !! ([Specification](../page/specs/stdlib_stats.html#description_1))
+    !! ([Specification](../page/specs/stdlib_stats.html#cov-covariance-of-array-elements))
       module function cov_1_rsp_rsp(x, dim, mask, corrected) result(res)
         real(sp), intent(in) :: x(:)
         integer, intent(in) :: dim
@@ -605,7 +605,7 @@ module stdlib_stats
     !! version: experimental
     !!
     !! Mean of array elements
-    !! ([Specification](../page/specs/stdlib_stats.html#description_2))
+    !! ([Specification](../page/specs/stdlib_stats.html#mean-mean-of-array-elements))
         module function mean_all_1_rsp_rsp (x, mask) result(res)
           real(sp), intent(in) :: x(:)
           logical, intent(in), optional :: mask
@@ -1517,11 +1517,653 @@ module stdlib_stats
   end interface mean
 
 
+  interface median
+    !! version: experimental
+    !!
+    !! Median of array elements
+    !! ([Specification](../page/specs/stdlib_stats.html#median-median-of-array-elements))
+        module function median_all_1_iint8_dp (x, mask) result(res)
+          integer(int8), intent(in) :: x(:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_1_iint8_dp
+        module function median_all_2_iint8_dp (x, mask) result(res)
+          integer(int8), intent(in) :: x(:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_2_iint8_dp
+        module function median_all_3_iint8_dp (x, mask) result(res)
+          integer(int8), intent(in) :: x(:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_3_iint8_dp
+        module function median_all_4_iint8_dp (x, mask) result(res)
+          integer(int8), intent(in) :: x(:,:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_4_iint8_dp
+        module function median_all_1_iint16_dp (x, mask) result(res)
+          integer(int16), intent(in) :: x(:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_1_iint16_dp
+        module function median_all_2_iint16_dp (x, mask) result(res)
+          integer(int16), intent(in) :: x(:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_2_iint16_dp
+        module function median_all_3_iint16_dp (x, mask) result(res)
+          integer(int16), intent(in) :: x(:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_3_iint16_dp
+        module function median_all_4_iint16_dp (x, mask) result(res)
+          integer(int16), intent(in) :: x(:,:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_4_iint16_dp
+        module function median_all_1_iint32_dp (x, mask) result(res)
+          integer(int32), intent(in) :: x(:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_1_iint32_dp
+        module function median_all_2_iint32_dp (x, mask) result(res)
+          integer(int32), intent(in) :: x(:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_2_iint32_dp
+        module function median_all_3_iint32_dp (x, mask) result(res)
+          integer(int32), intent(in) :: x(:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_3_iint32_dp
+        module function median_all_4_iint32_dp (x, mask) result(res)
+          integer(int32), intent(in) :: x(:,:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_4_iint32_dp
+        module function median_all_1_iint64_dp (x, mask) result(res)
+          integer(int64), intent(in) :: x(:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_1_iint64_dp
+        module function median_all_2_iint64_dp (x, mask) result(res)
+          integer(int64), intent(in) :: x(:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_2_iint64_dp
+        module function median_all_3_iint64_dp (x, mask) result(res)
+          integer(int64), intent(in) :: x(:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_3_iint64_dp
+        module function median_all_4_iint64_dp (x, mask) result(res)
+          integer(int64), intent(in) :: x(:,:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_4_iint64_dp
+        module function median_all_1_rsp_sp (x, mask) result(res)
+          real(sp), intent(in) :: x(:)
+          logical, intent(in), optional :: mask
+          real(sp) :: res
+        end function median_all_1_rsp_sp
+        module function median_all_2_rsp_sp (x, mask) result(res)
+          real(sp), intent(in) :: x(:,:)
+          logical, intent(in), optional :: mask
+          real(sp) :: res
+        end function median_all_2_rsp_sp
+        module function median_all_3_rsp_sp (x, mask) result(res)
+          real(sp), intent(in) :: x(:,:,:)
+          logical, intent(in), optional :: mask
+          real(sp) :: res
+        end function median_all_3_rsp_sp
+        module function median_all_4_rsp_sp (x, mask) result(res)
+          real(sp), intent(in) :: x(:,:,:,:)
+          logical, intent(in), optional :: mask
+          real(sp) :: res
+        end function median_all_4_rsp_sp
+        module function median_all_1_rdp_dp (x, mask) result(res)
+          real(dp), intent(in) :: x(:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_1_rdp_dp
+        module function median_all_2_rdp_dp (x, mask) result(res)
+          real(dp), intent(in) :: x(:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_2_rdp_dp
+        module function median_all_3_rdp_dp (x, mask) result(res)
+          real(dp), intent(in) :: x(:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_3_rdp_dp
+        module function median_all_4_rdp_dp (x, mask) result(res)
+          real(dp), intent(in) :: x(:,:,:,:)
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_all_4_rdp_dp
+        module function median_all_1_rqp_qp (x, mask) result(res)
+          real(qp), intent(in) :: x(:)
+          logical, intent(in), optional :: mask
+          real(qp) :: res
+        end function median_all_1_rqp_qp
+        module function median_all_2_rqp_qp (x, mask) result(res)
+          real(qp), intent(in) :: x(:,:)
+          logical, intent(in), optional :: mask
+          real(qp) :: res
+        end function median_all_2_rqp_qp
+        module function median_all_3_rqp_qp (x, mask) result(res)
+          real(qp), intent(in) :: x(:,:,:)
+          logical, intent(in), optional :: mask
+          real(qp) :: res
+        end function median_all_3_rqp_qp
+        module function median_all_4_rqp_qp (x, mask) result(res)
+          real(qp), intent(in) :: x(:,:,:,:)
+          logical, intent(in), optional :: mask
+          real(qp) :: res
+        end function median_all_4_rqp_qp
+  
+        module function median_1_iint8_dp(x, dim, mask) result(res)
+          integer(int8), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_1_iint8_dp
+        module function median_2_iint8_dp(x, dim, mask) result(res)
+          integer(int8), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_2_iint8_dp
+        module function median_3_iint8_dp(x, dim, mask) result(res)
+          integer(int8), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_3_iint8_dp
+        module function median_4_iint8_dp(x, dim, mask) result(res)
+          integer(int8), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_4_iint8_dp
+        module function median_1_iint16_dp(x, dim, mask) result(res)
+          integer(int16), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_1_iint16_dp
+        module function median_2_iint16_dp(x, dim, mask) result(res)
+          integer(int16), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_2_iint16_dp
+        module function median_3_iint16_dp(x, dim, mask) result(res)
+          integer(int16), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_3_iint16_dp
+        module function median_4_iint16_dp(x, dim, mask) result(res)
+          integer(int16), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_4_iint16_dp
+        module function median_1_iint32_dp(x, dim, mask) result(res)
+          integer(int32), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_1_iint32_dp
+        module function median_2_iint32_dp(x, dim, mask) result(res)
+          integer(int32), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_2_iint32_dp
+        module function median_3_iint32_dp(x, dim, mask) result(res)
+          integer(int32), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_3_iint32_dp
+        module function median_4_iint32_dp(x, dim, mask) result(res)
+          integer(int32), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_4_iint32_dp
+        module function median_1_iint64_dp(x, dim, mask) result(res)
+          integer(int64), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_1_iint64_dp
+        module function median_2_iint64_dp(x, dim, mask) result(res)
+          integer(int64), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_2_iint64_dp
+        module function median_3_iint64_dp(x, dim, mask) result(res)
+          integer(int64), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_3_iint64_dp
+        module function median_4_iint64_dp(x, dim, mask) result(res)
+          integer(int64), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_4_iint64_dp
+        module function median_1_rsp_sp(x, dim, mask) result(res)
+          real(sp), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(sp) :: res
+        end function median_1_rsp_sp
+        module function median_2_rsp_sp(x, dim, mask) result(res)
+          real(sp), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(sp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_2_rsp_sp
+        module function median_3_rsp_sp(x, dim, mask) result(res)
+          real(sp), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(sp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_3_rsp_sp
+        module function median_4_rsp_sp(x, dim, mask) result(res)
+          real(sp), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(sp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_4_rsp_sp
+        module function median_1_rdp_dp(x, dim, mask) result(res)
+          real(dp), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res
+        end function median_1_rdp_dp
+        module function median_2_rdp_dp(x, dim, mask) result(res)
+          real(dp), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_2_rdp_dp
+        module function median_3_rdp_dp(x, dim, mask) result(res)
+          real(dp), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_3_rdp_dp
+        module function median_4_rdp_dp(x, dim, mask) result(res)
+          real(dp), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_4_rdp_dp
+        module function median_1_rqp_qp(x, dim, mask) result(res)
+          real(qp), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(qp) :: res
+        end function median_1_rqp_qp
+        module function median_2_rqp_qp(x, dim, mask) result(res)
+          real(qp), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(qp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_2_rqp_qp
+        module function median_3_rqp_qp(x, dim, mask) result(res)
+          real(qp), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(qp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_3_rqp_qp
+        module function median_4_rqp_qp(x, dim, mask) result(res)
+          real(qp), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in), optional :: mask
+          real(qp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_4_rqp_qp
+  
+        module function median_all_mask_1_iint8_dp(x, mask) result(res)
+          integer(int8), intent(in) :: x(:)
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_all_mask_1_iint8_dp
+        module function median_all_mask_2_iint8_dp(x, mask) result(res)
+          integer(int8), intent(in) :: x(:,:)
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res
+        end function median_all_mask_2_iint8_dp
+        module function median_all_mask_3_iint8_dp(x, mask) result(res)
+          integer(int8), intent(in) :: x(:,:,:)
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res
+        end function median_all_mask_3_iint8_dp
+        module function median_all_mask_4_iint8_dp(x, mask) result(res)
+          integer(int8), intent(in) :: x(:,:,:,:)
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res
+        end function median_all_mask_4_iint8_dp
+        module function median_all_mask_1_iint16_dp(x, mask) result(res)
+          integer(int16), intent(in) :: x(:)
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_all_mask_1_iint16_dp
+        module function median_all_mask_2_iint16_dp(x, mask) result(res)
+          integer(int16), intent(in) :: x(:,:)
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res
+        end function median_all_mask_2_iint16_dp
+        module function median_all_mask_3_iint16_dp(x, mask) result(res)
+          integer(int16), intent(in) :: x(:,:,:)
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res
+        end function median_all_mask_3_iint16_dp
+        module function median_all_mask_4_iint16_dp(x, mask) result(res)
+          integer(int16), intent(in) :: x(:,:,:,:)
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res
+        end function median_all_mask_4_iint16_dp
+        module function median_all_mask_1_iint32_dp(x, mask) result(res)
+          integer(int32), intent(in) :: x(:)
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_all_mask_1_iint32_dp
+        module function median_all_mask_2_iint32_dp(x, mask) result(res)
+          integer(int32), intent(in) :: x(:,:)
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res
+        end function median_all_mask_2_iint32_dp
+        module function median_all_mask_3_iint32_dp(x, mask) result(res)
+          integer(int32), intent(in) :: x(:,:,:)
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res
+        end function median_all_mask_3_iint32_dp
+        module function median_all_mask_4_iint32_dp(x, mask) result(res)
+          integer(int32), intent(in) :: x(:,:,:,:)
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res
+        end function median_all_mask_4_iint32_dp
+        module function median_all_mask_1_iint64_dp(x, mask) result(res)
+          integer(int64), intent(in) :: x(:)
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_all_mask_1_iint64_dp
+        module function median_all_mask_2_iint64_dp(x, mask) result(res)
+          integer(int64), intent(in) :: x(:,:)
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res
+        end function median_all_mask_2_iint64_dp
+        module function median_all_mask_3_iint64_dp(x, mask) result(res)
+          integer(int64), intent(in) :: x(:,:,:)
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res
+        end function median_all_mask_3_iint64_dp
+        module function median_all_mask_4_iint64_dp(x, mask) result(res)
+          integer(int64), intent(in) :: x(:,:,:,:)
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res
+        end function median_all_mask_4_iint64_dp
+        module function median_all_mask_1_rsp_sp(x, mask) result(res)
+          real(sp), intent(in) :: x(:)
+          logical, intent(in) :: mask(:)
+          real(sp) :: res
+        end function median_all_mask_1_rsp_sp
+        module function median_all_mask_2_rsp_sp(x, mask) result(res)
+          real(sp), intent(in) :: x(:,:)
+          logical, intent(in) :: mask(:,:)
+          real(sp) :: res
+        end function median_all_mask_2_rsp_sp
+        module function median_all_mask_3_rsp_sp(x, mask) result(res)
+          real(sp), intent(in) :: x(:,:,:)
+          logical, intent(in) :: mask(:,:,:)
+          real(sp) :: res
+        end function median_all_mask_3_rsp_sp
+        module function median_all_mask_4_rsp_sp(x, mask) result(res)
+          real(sp), intent(in) :: x(:,:,:,:)
+          logical, intent(in) :: mask(:,:,:,:)
+          real(sp) :: res
+        end function median_all_mask_4_rsp_sp
+        module function median_all_mask_1_rdp_dp(x, mask) result(res)
+          real(dp), intent(in) :: x(:)
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_all_mask_1_rdp_dp
+        module function median_all_mask_2_rdp_dp(x, mask) result(res)
+          real(dp), intent(in) :: x(:,:)
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res
+        end function median_all_mask_2_rdp_dp
+        module function median_all_mask_3_rdp_dp(x, mask) result(res)
+          real(dp), intent(in) :: x(:,:,:)
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res
+        end function median_all_mask_3_rdp_dp
+        module function median_all_mask_4_rdp_dp(x, mask) result(res)
+          real(dp), intent(in) :: x(:,:,:,:)
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res
+        end function median_all_mask_4_rdp_dp
+        module function median_all_mask_1_rqp_qp(x, mask) result(res)
+          real(qp), intent(in) :: x(:)
+          logical, intent(in) :: mask(:)
+          real(qp) :: res
+        end function median_all_mask_1_rqp_qp
+        module function median_all_mask_2_rqp_qp(x, mask) result(res)
+          real(qp), intent(in) :: x(:,:)
+          logical, intent(in) :: mask(:,:)
+          real(qp) :: res
+        end function median_all_mask_2_rqp_qp
+        module function median_all_mask_3_rqp_qp(x, mask) result(res)
+          real(qp), intent(in) :: x(:,:,:)
+          logical, intent(in) :: mask(:,:,:)
+          real(qp) :: res
+        end function median_all_mask_3_rqp_qp
+        module function median_all_mask_4_rqp_qp(x, mask) result(res)
+          real(qp), intent(in) :: x(:,:,:,:)
+          logical, intent(in) :: mask(:,:,:,:)
+          real(qp) :: res
+        end function median_all_mask_4_rqp_qp
+  
+        module function  median_mask_1_iint8_dp(x, dim, mask) result(res)
+          integer(int8), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_mask_1_iint8_dp
+        module function  median_mask_2_iint8_dp(x, dim, mask) result(res)
+          integer(int8), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_mask_2_iint8_dp
+        module function  median_mask_3_iint8_dp(x, dim, mask) result(res)
+          integer(int8), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_mask_3_iint8_dp
+        module function  median_mask_4_iint8_dp(x, dim, mask) result(res)
+          integer(int8), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_mask_4_iint8_dp
+        module function  median_mask_1_iint16_dp(x, dim, mask) result(res)
+          integer(int16), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_mask_1_iint16_dp
+        module function  median_mask_2_iint16_dp(x, dim, mask) result(res)
+          integer(int16), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_mask_2_iint16_dp
+        module function  median_mask_3_iint16_dp(x, dim, mask) result(res)
+          integer(int16), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_mask_3_iint16_dp
+        module function  median_mask_4_iint16_dp(x, dim, mask) result(res)
+          integer(int16), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_mask_4_iint16_dp
+        module function  median_mask_1_iint32_dp(x, dim, mask) result(res)
+          integer(int32), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_mask_1_iint32_dp
+        module function  median_mask_2_iint32_dp(x, dim, mask) result(res)
+          integer(int32), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_mask_2_iint32_dp
+        module function  median_mask_3_iint32_dp(x, dim, mask) result(res)
+          integer(int32), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_mask_3_iint32_dp
+        module function  median_mask_4_iint32_dp(x, dim, mask) result(res)
+          integer(int32), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_mask_4_iint32_dp
+        module function  median_mask_1_iint64_dp(x, dim, mask) result(res)
+          integer(int64), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_mask_1_iint64_dp
+        module function  median_mask_2_iint64_dp(x, dim, mask) result(res)
+          integer(int64), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_mask_2_iint64_dp
+        module function  median_mask_3_iint64_dp(x, dim, mask) result(res)
+          integer(int64), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_mask_3_iint64_dp
+        module function  median_mask_4_iint64_dp(x, dim, mask) result(res)
+          integer(int64), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_mask_4_iint64_dp
+        module function  median_mask_1_rsp_sp(x, dim, mask) result(res)
+          real(sp), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:)
+          real(sp) :: res
+        end function median_mask_1_rsp_sp
+        module function  median_mask_2_rsp_sp(x, dim, mask) result(res)
+          real(sp), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:)
+          real(sp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_mask_2_rsp_sp
+        module function  median_mask_3_rsp_sp(x, dim, mask) result(res)
+          real(sp), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:)
+          real(sp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_mask_3_rsp_sp
+        module function  median_mask_4_rsp_sp(x, dim, mask) result(res)
+          real(sp), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:,:)
+          real(sp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_mask_4_rsp_sp
+        module function  median_mask_1_rdp_dp(x, dim, mask) result(res)
+          real(dp), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:)
+          real(dp) :: res
+        end function median_mask_1_rdp_dp
+        module function  median_mask_2_rdp_dp(x, dim, mask) result(res)
+          real(dp), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_mask_2_rdp_dp
+        module function  median_mask_3_rdp_dp(x, dim, mask) result(res)
+          real(dp), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_mask_3_rdp_dp
+        module function  median_mask_4_rdp_dp(x, dim, mask) result(res)
+          real(dp), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:,:)
+          real(dp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_mask_4_rdp_dp
+        module function  median_mask_1_rqp_qp(x, dim, mask) result(res)
+          real(qp), intent(in) :: x(:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:)
+          real(qp) :: res
+        end function median_mask_1_rqp_qp
+        module function  median_mask_2_rqp_qp(x, dim, mask) result(res)
+          real(qp), intent(in) :: x(:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:)
+          real(qp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim))
+        end function median_mask_2_rqp_qp
+        module function  median_mask_3_rqp_qp(x, dim, mask) result(res)
+          real(qp), intent(in) :: x(:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:)
+          real(qp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim))
+        end function median_mask_3_rqp_qp
+        module function  median_mask_4_rqp_qp(x, dim, mask) result(res)
+          real(qp), intent(in) :: x(:,:,:,:)
+          integer, intent(in) :: dim
+          logical, intent(in) :: mask(:,:,:,:)
+          real(qp) :: res(merge(size(x, 1), size(x, 2), mask=1<dim), merge(size(x, 2), size(x, 3), mask=2<dim), merge(size(x, 3),&
+              & size(x, 4), mask=3<dim))
+        end function median_mask_4_rqp_qp
+
+  end interface
+
+
   interface var
     !! version: experimental
     !!
     !! Variance of array elements
-    !! ([Specification](../page/specs/stdlib_stats.html#description_4))
+    !! ([Specification](../page/specs/stdlib_stats.html#var-variance-of-array-elements))
 
         module function var_all_1_rsp_rsp(x, mask, corrected) result(res)
           real(sp), intent(in) :: x(:)
@@ -2598,7 +3240,7 @@ module stdlib_stats
     !! version: experimental
     !!
     !! Central moment of array elements
-    !! ([Specification](../page/specs/stdlib_stats.html#description_3))
+    !! ([Specification](../page/specs/stdlib_stats.html#moment-central-moments-of-array-elements))
         module function moment_all_1_rsp_rsp(x, order, center, mask) result(res)
           real(sp), intent(in) :: x(:)
           integer, intent(in) :: order

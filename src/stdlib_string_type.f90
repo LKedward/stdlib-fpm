@@ -13,7 +13,7 @@
 !> The specification of this module is available [here](../page/specs/stdlib_string_type.html).
 module stdlib_string_type
     use stdlib_ascii, only: to_lower_ => to_lower, to_upper_ => to_upper, &
-       & to_title_ => to_title, to_sentence_ => to_sentence, reverse_ => reverse, to_string
+       & to_title_ => to_title, to_sentence_ => to_sentence, reverse_ => reverse
     use stdlib_kinds, only : int8, int16, int32, int64, lk, c_bool
     implicit none
     private
@@ -21,7 +21,7 @@ module stdlib_string_type
     public :: string_type
     public :: len, len_trim, trim, index, scan, verify, repeat, adjustr, adjustl
     public :: lgt, lge, llt, lle, char, ichar, iachar
-    public :: to_lower, to_upper, to_title, to_sentence, reverse
+    public :: to_lower, to_upper, to_title, to_sentence, reverse, move
     public :: assignment(=)
     public :: operator(>), operator(>=), operator(<), operator(<=)
     public :: operator(==), operator(/=), operator(//)
@@ -41,24 +41,44 @@ module stdlib_string_type
         character(len=:), allocatable :: raw
     end type string_type
 
-    !> Constructor for new string instances
-    interface string_type
-        module procedure :: new_string
-        module procedure :: new_string_from_integer_int8
-        module procedure :: new_string_from_integer_int16
-        module procedure :: new_string_from_integer_int32
-        module procedure :: new_string_from_integer_int64
-        module procedure :: new_string_from_logical_lk
-        module procedure :: new_string_from_logical_c_bool
-    end interface string_type
-
-
     !> Returns the length of the character sequence represented by the string.
     !>
     !> This method is elemental and returns a default integer scalar value.
     interface len
         module procedure :: len_string
     end interface len
+
+    !> Constructor for new string instances
+    interface string_type
+        pure elemental module function new_string(string) result(new)
+            character(len=*), intent(in), optional :: string
+            type(string_type) :: new
+        end function new_string
+        pure elemental module function new_string_from_integer_int8(val) result(new)
+            integer(int8), intent(in) :: val
+            type(string_type) :: new
+        end function new_string_from_integer_int8
+        pure elemental module function new_string_from_integer_int16(val) result(new)
+            integer(int16), intent(in) :: val
+            type(string_type) :: new
+        end function new_string_from_integer_int16
+        pure elemental module function new_string_from_integer_int32(val) result(new)
+            integer(int32), intent(in) :: val
+            type(string_type) :: new
+        end function new_string_from_integer_int32
+        pure elemental module function new_string_from_integer_int64(val) result(new)
+            integer(int64), intent(in) :: val
+            type(string_type) :: new
+        end function new_string_from_integer_int64
+        pure elemental module function new_string_from_logical_lk(val) result(new)
+            logical(lk), intent(in) :: val
+            type(string_type) :: new
+        end function new_string_from_logical_lk
+        pure elemental module function new_string_from_logical_c_bool(val) result(new)
+            logical(c_bool), intent(in) :: val
+            type(string_type) :: new
+        end function new_string_from_logical_c_bool
+    end interface string_type        
 
     !> Returns the length of the character sequence without trailing spaces
     !> represented by the string.
@@ -204,6 +224,17 @@ module stdlib_string_type
         module procedure :: verify_string_char
         module procedure :: verify_char_string
     end interface verify
+
+    !> Version: experimental
+    !>
+    !> Moves the allocated character scalar from 'from' to 'to'
+    !> [Specifications](../page/specs/stdlib_string_type.html#move)
+    interface move
+        module procedure :: move_string_string
+        module procedure :: move_string_char
+        module procedure :: move_char_string
+        module procedure :: move_char_char
+    end interface move
 
     !> Lexically compare the order of two character sequences being greater,
     !> The left-hand side, the right-hand side or both character sequences can
@@ -354,55 +385,6 @@ module stdlib_string_type
 
 
 contains
-
-
-    !> Constructor for new string instances from a scalar character value.
-    elemental function new_string(string) result(new)
-        character(len=*), intent(in), optional :: string
-        type(string_type) :: new
-        if (present(string)) then
-            new%raw = string
-        end if
-    end function new_string
-
-    !> Constructor for new string instances from an integer of kind int8.
-    elemental function new_string_from_integer_int8(val) result(new)
-        integer(int8), intent(in) :: val
-        type(string_type) :: new
-        new%raw = to_string(val)
-    end function new_string_from_integer_int8
-    !> Constructor for new string instances from an integer of kind int16.
-    elemental function new_string_from_integer_int16(val) result(new)
-        integer(int16), intent(in) :: val
-        type(string_type) :: new
-        new%raw = to_string(val)
-    end function new_string_from_integer_int16
-    !> Constructor for new string instances from an integer of kind int32.
-    elemental function new_string_from_integer_int32(val) result(new)
-        integer(int32), intent(in) :: val
-        type(string_type) :: new
-        new%raw = to_string(val)
-    end function new_string_from_integer_int32
-    !> Constructor for new string instances from an integer of kind int64.
-    elemental function new_string_from_integer_int64(val) result(new)
-        integer(int64), intent(in) :: val
-        type(string_type) :: new
-        new%raw = to_string(val)
-    end function new_string_from_integer_int64
-
-    !> Constructor for new string instances from a logical of kind lk.
-    elemental function new_string_from_logical_lk(val) result(new)
-        logical(lk), intent(in) :: val
-        type(string_type) :: new
-        new%raw = to_string(val)
-    end function new_string_from_logical_lk
-    !> Constructor for new string instances from a logical of kind c_bool.
-    elemental function new_string_from_logical_c_bool(val) result(new)
-        logical(c_bool), intent(in) :: val
-        type(string_type) :: new
-        new%raw = to_string(val)
-    end function new_string_from_logical_c_bool
-
 
     !> Assign a character sequence to a string.
     elemental subroutine assign_string_char(lhs, rhs)
@@ -740,6 +722,45 @@ contains
 
     end function verify_char_string
 
+    !> Moves the allocated character scalar from 'from' to 'to'
+    !> No output
+    subroutine move_string_string(from, to)
+        type(string_type), intent(inout) :: from
+        type(string_type), intent(out) :: to
+
+        call move_alloc(from%raw, to%raw)
+
+    end subroutine move_string_string
+
+    !> Moves the allocated character scalar from 'from' to 'to'
+    !> No output
+    subroutine move_string_char(from, to)
+        type(string_type), intent(inout) :: from
+        character(len=:), intent(out), allocatable :: to
+
+        call move_alloc(from%raw, to)
+
+    end subroutine move_string_char
+
+    !> Moves the allocated character scalar from 'from' to 'to'
+    !> No output
+    subroutine move_char_string(from, to)
+        character(len=:), intent(inout), allocatable :: from
+        type(string_type), intent(out) :: to
+
+        call move_alloc(from, to%raw)
+
+    end subroutine move_char_string
+
+    !> Moves the allocated character scalar from 'from' to 'to'
+    !> No output
+    subroutine move_char_char(from, to)
+        character(len=:), intent(inout), allocatable :: from
+        character(len=:), intent(out), allocatable :: to
+
+        call move_alloc(from, to)
+
+    end subroutine move_char_char
 
     !> Compare two character sequences for being greater.
     !> In this version both character sequences are by a string.

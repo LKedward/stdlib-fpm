@@ -3,6 +3,7 @@ module stdlib_linalg
   !! ([Specification](../page/specs/stdlib_linalg.html))
   use stdlib_kinds, only: sp, dp, qp, &
     int8, int16, int32, int64
+  use stdlib_optval, only: optval
   implicit none
   private
 
@@ -275,20 +276,28 @@ module stdlib_linalg
 
 contains
 
-    function eye(n) result(res)
-      !! version: experimental
-      !!
-      !! Constructs the identity matrix
-      !! ([Specification](../page/specs/stdlib_linalg.html#description_1))
-      integer, intent(in) :: n
-      integer(int8) :: res(n, n)
-      integer :: i
-      res = 0
-      do i = 1, n
-         res(i, i) = 1
-      end do
-    end function eye
+    !> Version: experimental
+    !>
+    !> Constructs the identity matrix.
+    !> ([Specification](../page/specs/stdlib_linalg.html#eye-construct-the-identity-matrix))
+    pure function eye(dim1, dim2) result(result)
 
+        integer, intent(in) :: dim1
+        integer, intent(in), optional :: dim2
+        integer(int8), allocatable :: result(:, :)
+
+        integer :: dim2_
+        integer :: i
+
+        dim2_ = optval(dim2, dim1)
+        allocate(result(dim1, dim2_))
+        
+        result = 0_int8
+        do i = 1, min(dim1, dim2_)
+            result(i, i) = 1_int8
+        end do
+
+    end function eye
 
       function trace_rsp(A) result(res)
         real(sp), intent(in) :: A(:,:)
@@ -380,4 +389,5 @@ contains
           res = res + A(i,i)
         end do
       end function trace_iint64
-end module
+
+end module stdlib_linalg

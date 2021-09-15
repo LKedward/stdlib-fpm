@@ -1,19 +1,110 @@
 ! SPDX-Identifier: MIT
-
 !> This module implements basic string handling routines.
 !>
 !> The specification of this module is available [here](../page/specs/stdlib_strings.html).
 module stdlib_strings
     use stdlib_ascii, only: whitespace
-    use stdlib_string_type, only: string_type, char, verify
+    use stdlib_string_type, only: string_type, char, verify, repeat, len
     use stdlib_optval, only: optval
+    use stdlib_kinds, only: sp, dp, qp, int8, int16, int32, int64, lk, c_bool
     implicit none
     private
 
+    public :: to_string
     public :: strip, chomp
     public :: starts_with, ends_with
-    public :: slice, find
+    public :: slice, find, replace_all, padl, padr, count
 
+    !> Version: experimental
+    !>
+    !> Format or transfer other types as a string.
+    !> ([Specification](../page/specs/stdlib_strings.html#to_string))
+    interface to_string
+        pure module function to_string_r_sp(value, format) result(string)
+            real(sp), intent(in) :: value
+            character(len=*), intent(in), optional :: format
+            character(len=:), allocatable :: string
+        end function to_string_r_sp
+        pure module function to_string_r_dp(value, format) result(string)
+            real(dp), intent(in) :: value
+            character(len=*), intent(in), optional :: format
+            character(len=:), allocatable :: string
+        end function to_string_r_dp
+        pure module function to_string_r_qp(value, format) result(string)
+            real(qp), intent(in) :: value
+            character(len=*), intent(in), optional :: format
+            character(len=:), allocatable :: string
+        end function to_string_r_qp
+        pure module function to_string_c_sp(value, format) result(string)
+            complex(sp), intent(in) :: value
+            character(len=*), intent(in), optional :: format
+            character(len=:), allocatable :: string
+        end function to_string_c_sp
+        pure module function to_string_c_dp(value, format) result(string)
+            complex(dp), intent(in) :: value
+            character(len=*), intent(in), optional :: format
+            character(len=:), allocatable :: string
+        end function to_string_c_dp
+        pure module function to_string_c_qp(value, format) result(string)
+            complex(qp), intent(in) :: value
+            character(len=*), intent(in), optional :: format
+            character(len=:), allocatable :: string
+        end function to_string_c_qp
+        pure module function to_string_1_i_int8(value) result(string)
+            integer(int8), intent(in) :: value
+            character(len=:), allocatable :: string 
+        end function to_string_1_i_int8
+        pure module function to_string_2_i_int8(value, format) result(string)
+            integer(int8), intent(in) :: value
+            character(len=*), intent(in) :: format
+            character(len=:), allocatable :: string
+        end function to_string_2_i_int8
+        pure module function to_string_1_i_int16(value) result(string)
+            integer(int16), intent(in) :: value
+            character(len=:), allocatable :: string 
+        end function to_string_1_i_int16
+        pure module function to_string_2_i_int16(value, format) result(string)
+            integer(int16), intent(in) :: value
+            character(len=*), intent(in) :: format
+            character(len=:), allocatable :: string
+        end function to_string_2_i_int16
+        pure module function to_string_1_i_int32(value) result(string)
+            integer(int32), intent(in) :: value
+            character(len=:), allocatable :: string 
+        end function to_string_1_i_int32
+        pure module function to_string_2_i_int32(value, format) result(string)
+            integer(int32), intent(in) :: value
+            character(len=*), intent(in) :: format
+            character(len=:), allocatable :: string
+        end function to_string_2_i_int32
+        pure module function to_string_1_i_int64(value) result(string)
+            integer(int64), intent(in) :: value
+            character(len=:), allocatable :: string 
+        end function to_string_1_i_int64
+        pure module function to_string_2_i_int64(value, format) result(string)
+            integer(int64), intent(in) :: value
+            character(len=*), intent(in) :: format
+            character(len=:), allocatable :: string
+        end function to_string_2_i_int64
+        pure module function to_string_1_l_lk(value) result(string)
+            logical(lk), intent(in) :: value
+            character(len=1) :: string 
+        end function to_string_1_l_lk
+        pure module function to_string_2_l_lk(value, format) result(string)
+            logical(lk), intent(in) :: value
+            character(len=*), intent(in) :: format
+            character(len=:), allocatable :: string
+        end function to_string_2_l_lk
+        pure module function to_string_1_l_c_bool(value) result(string)
+            logical(c_bool), intent(in) :: value
+            character(len=1) :: string 
+        end function to_string_1_l_c_bool
+        pure module function to_string_2_l_c_bool(value, format) result(string)
+            logical(c_bool), intent(in) :: value
+            character(len=*), intent(in) :: format
+            character(len=:), allocatable :: string
+        end function to_string_2_l_c_bool
+    end interface to_string
 
     !> Remove leading and trailing whitespace characters.
     !>
@@ -78,6 +169,54 @@ module stdlib_strings
         module procedure :: find_char_string
         module procedure :: find_char_char
     end interface find
+
+    !> Replaces all the occurrences of substring 'pattern' in the input 'string'
+    !> with the replacement 'replacement'
+    !> Version: experimental
+    interface replace_all
+        module procedure :: replace_all_string_string_string
+        module procedure :: replace_all_string_string_char
+        module procedure :: replace_all_string_char_string
+        module procedure :: replace_all_char_string_string
+        module procedure :: replace_all_string_char_char
+        module procedure :: replace_all_char_string_char
+        module procedure :: replace_all_char_char_string
+        module procedure :: replace_all_char_char_char
+    end interface replace_all
+
+    !> Version: experimental
+    !>
+    !> Left pad the input string
+    !> [Specifications](../page/specs/stdlib_strings.html#padl)
+    interface padl
+        module procedure :: padl_string_default
+        module procedure :: padl_string_pad_with
+        module procedure :: padl_char_default
+        module procedure :: padl_char_pad_with
+    end interface padl
+
+    !> Version: experimental
+    !>
+    !> Right pad the input string
+    !> [Specifications](../page/specs/stdlib_strings.html#padr)
+    interface padr
+        module procedure :: padr_string_default
+        module procedure :: padr_string_pad_with
+        module procedure :: padr_char_default
+        module procedure :: padr_char_pad_with
+    end interface padr
+
+    !> Version: experimental
+    !>
+    !> Returns the number of times substring 'pattern' has appeared in the
+    !> input string 'string'
+    !> [Specifications](../page/specs/stdlib_strings.html#count)
+    interface count
+        module procedure :: count_string_string
+        module procedure :: count_string_char
+        module procedure :: count_char_string
+        module procedure :: count_char_char
+    end interface count
 
 contains
 
@@ -353,7 +492,7 @@ contains
         end if
 
         if (present(first)) then
-            first_index =  first
+            first_index = first
         end if
         if (present(last)) then
             last_index = last
@@ -429,9 +568,7 @@ contains
         logical, intent(in), optional :: consider_overlapping
         integer :: lps_array(len(pattern))
         integer :: res, s_i, p_i, length_string, length_pattern, occurrence_
-        logical :: consider_overlapping_
 
-        consider_overlapping_ = optval(consider_overlapping, .true.)
         occurrence_ = optval(occurrence, 1)
         res = 0
         length_string = len(string)
@@ -450,7 +587,7 @@ contains
                         if (occurrence_ == 0) then
                             res = s_i - length_pattern + 1
                             exit
-                        else if (consider_overlapping_) then
+                        else if (optval(consider_overlapping, .true.)) then
                             p_i = lps_array(p_i)
                         else
                             p_i = 0
@@ -499,5 +636,342 @@ contains
     
     end function compute_lps
 
+    !> Replaces all occurrences of substring 'pattern' in the input 'string'
+    !> with the replacement 'replacement'
+    !> Returns a new string
+    pure function replace_all_string_string_string(string, pattern, replacement) result(res)
+        type(string_type), intent(in) :: string
+        type(string_type), intent(in) :: pattern
+        type(string_type), intent(in) :: replacement
+        type(string_type) :: res
+
+        res = string_type(replace_all(char(string), & 
+                & char(pattern), char(replacement)))
+
+    end function replace_all_string_string_string
+
+    !> Replaces all occurrences of substring 'pattern' in the input 'string'
+    !> with the replacement 'replacement'
+    !> Returns a new string
+    pure function replace_all_string_string_char(string, pattern, replacement) result(res)
+        type(string_type), intent(in) :: string
+        type(string_type), intent(in) :: pattern
+        character(len=*), intent(in) :: replacement
+        type(string_type) :: res
+
+        res = string_type(replace_all(char(string), char(pattern), replacement))
+
+    end function replace_all_string_string_char
+
+    !> Replaces all occurrences of substring 'pattern' in the input 'string'
+    !> with the replacement 'replacement'
+    !> Returns a new string
+    pure function replace_all_string_char_string(string, pattern, replacement) result(res)
+        type(string_type), intent(in) :: string
+        character(len=*), intent(in) :: pattern
+        type(string_type), intent(in) :: replacement
+        type(string_type) :: res
+
+        res = string_type(replace_all(char(string), pattern, char(replacement)))
+
+    end function replace_all_string_char_string
+
+    !> Replaces all occurrences of substring 'pattern' in the input 'string'
+    !> with the replacement 'replacement'
+    !> Returns a new string
+    pure function replace_all_char_string_string(string, pattern, replacement) result(res)
+        character(len=*), intent(in) :: string
+        type(string_type), intent(in) :: pattern
+        type(string_type), intent(in) :: replacement
+        character(len=:), allocatable :: res
+
+        res = replace_all(string, char(pattern), char(replacement))
+
+    end function replace_all_char_string_string
+
+    !> Replaces all occurrences of substring 'pattern' in the input 'string'
+    !> with the replacement 'replacement'
+    !> Returns a new string
+    pure function replace_all_string_char_char(string, pattern, replacement) result(res)
+        type(string_type), intent(in) :: string
+        character(len=*), intent(in) :: pattern
+        character(len=*), intent(in) :: replacement
+        type(string_type) :: res
+
+        res = string_type(replace_all(char(string), pattern, replacement))
+
+    end function replace_all_string_char_char
+
+    !> Replaces all occurrences of substring 'pattern' in the input 'string'
+    !> with the replacement 'replacement'
+    !> Returns a new string
+    pure function replace_all_char_string_char(string, pattern, replacement) result(res)
+        character(len=*), intent(in) :: string
+        type(string_type), intent(in) :: pattern
+        character(len=*), intent(in) :: replacement
+        character(len=:), allocatable :: res
+
+        res = replace_all(string, char(pattern), replacement)
+
+    end function replace_all_char_string_char
+
+    !> Replaces all occurrences of substring 'pattern' in the input 'string'
+    !> with the replacement 'replacement'
+    !> Returns a new string
+    pure function replace_all_char_char_string(string, pattern, replacement) result(res)
+        character(len=*), intent(in) :: string
+        character(len=*), intent(in) :: pattern
+        type(string_type), intent(in) :: replacement
+        character(len=:), allocatable :: res
+
+        res = replace_all(string, pattern, char(replacement))
+
+    end function replace_all_char_char_string
+
+    !> Replaces all the occurrences of substring 'pattern' in the input 'string'
+    !> with the replacement 'replacement'
+    !> Returns a new string
+    pure function replace_all_char_char_char(string, pattern, replacement) result(res)
+        character(len=*), intent(in) :: string
+        character(len=*), intent(in) :: pattern
+        character(len=*), intent(in) :: replacement
+        character(len=:), allocatable :: res
+        integer :: lps_array(len(pattern))
+        integer :: s_i, p_i, last, length_string, length_pattern
+
+        res = ""
+        length_string = len(string)
+        length_pattern = len(pattern)
+        last = 1
+        
+        if (length_pattern > 0 .and. length_pattern <= length_string) then
+            lps_array = compute_lps(pattern)
+
+            s_i = 1
+            p_i = 1
+            do while (s_i <= length_string)
+                if (string(s_i:s_i) == pattern(p_i:p_i)) then
+                    if (p_i == length_pattern) then
+                        res = res // &
+                                & string(last : s_i - length_pattern) // &
+                                & replacement
+                        last = s_i + 1
+                        p_i = 0
+                    end if
+                    s_i = s_i + 1
+                    p_i = p_i + 1
+                else if (p_i > 1) then
+                    p_i = lps_array(p_i - 1) + 1
+                else
+                    s_i = s_i + 1
+                end if
+            end do
+        end if
+        
+        res = res // string(last : length_string)
+
+    end function replace_all_char_char_char
+
+    !> Left pad the input string with " " (1 whitespace)
+    !>
+    !> Returns a new string
+    pure function padl_string_default(string, output_length) result(res)
+        type(string_type), intent(in) :: string
+        integer, intent(in) :: output_length
+        type(string_type) :: res
+
+        res = string_type(padl(char(string), output_length, " "))
+
+    end function padl_string_default
+
+    !> Left pad the input string with the 'pad_with' character
+    !>
+    !> Returns a new string
+    pure function padl_string_pad_with(string, output_length, pad_with) result(res)
+        type(string_type), intent(in) :: string
+        integer, intent(in) :: output_length
+        character(len=1), intent(in) :: pad_with
+        type(string_type) :: res
+
+        res = string_type(padl(char(string), output_length, pad_with))
+
+    end function padl_string_pad_with
+
+    !> Left pad the input string with " " (1 whitespace)
+    !>
+    !> Returns a new string
+    pure function padl_char_default(string, output_length) result(res)
+        character(len=*), intent(in) :: string
+        integer, intent(in) :: output_length
+        character(len=max(len(string), output_length)) :: res
+
+        res = padl(string, output_length, " ")
+
+    end function padl_char_default
+
+    !> Left pad the input string with the 'pad_with' character
+    !>
+    !> Returns a new string
+    pure function padl_char_pad_with(string, output_length, pad_with) result(res)
+        character(len=*), intent(in) :: string
+        integer, intent(in) :: output_length
+        character(len=1), intent(in) :: pad_with
+        character(len=max(len(string), output_length)) :: res
+        integer :: string_length
+
+        string_length = len(string)
+
+        if (string_length < output_length) then
+            res = repeat(pad_with, output_length - string_length)
+            res(output_length - string_length + 1 : output_length) = string
+        else
+            res = string
+        end if
+
+    end function padl_char_pad_with
+
+    !> Right pad the input string with " " (1 whitespace)
+    !>
+    !> Returns a new string
+    pure function padr_string_default(string, output_length) result(res)
+        type(string_type), intent(in) :: string
+        integer, intent(in) :: output_length
+        character(len=max(len(string), output_length)) :: char_output
+        type(string_type) :: res
+
+        ! We're taking advantage of `char_output` being longer than `string` and
+        ! initialized with whitespaces. By casting `string` to a `character`
+        ! type and back to `string_type`, we're effectively right-padding
+        ! `string` with spaces, so we don't need to pad explicitly.
+        char_output = char(string)
+        res = string_type(char_output)
+
+    end function padr_string_default
+
+    !> Right pad the input string with the 'pad_with' character
+    !>
+    !> Returns a new string
+    pure function padr_string_pad_with(string, output_length, pad_with) result(res)
+        type(string_type), intent(in) :: string
+        integer, intent(in) :: output_length
+        character(len=1), intent(in) :: pad_with
+        type(string_type) :: res
+
+        res = string_type(padr(char(string), output_length, pad_with))
+
+    end function padr_string_pad_with
+
+    !> Right pad the input string with " " (1 whitespace)
+    !>
+    !> Returns a new string
+    pure function padr_char_default(string, output_length) result(res)
+        character(len=*), intent(in) :: string
+        integer, intent(in) :: output_length
+        character(len=max(len(string), output_length)) :: res
+
+        res = string
+
+    end function padr_char_default
+
+    !> Right pad the input string with the 'pad_with' character
+    !>
+    !> Returns a new string
+    pure function padr_char_pad_with(string, output_length, pad_with) result(res)
+        character(len=*), intent(in) :: string
+        integer, intent(in) :: output_length
+        character(len=1), intent(in) :: pad_with
+        character(len=max(len(string), output_length)) :: res
+        integer :: string_length
+
+        string_length = len(string)
+
+        res = string
+        if (string_length < output_length) then
+            res(string_length + 1 : output_length) = &
+              repeat(pad_with, output_length - string_length)
+        end if
+
+    end function padr_char_pad_with
+
+    !> Returns the number of times substring 'pattern' has appeared in the
+    !> input string 'string'
+    !> Returns an integer
+    elemental function count_string_string(string, pattern, consider_overlapping) result(res)
+        type(string_type), intent(in) :: string
+        type(string_type), intent(in) :: pattern
+        logical, intent(in), optional :: consider_overlapping
+        integer :: res
+
+        res = count(char(string), char(pattern), consider_overlapping)
+
+    end function count_string_string
+
+    !> Returns the number of times substring 'pattern' has appeared in the
+    !> input string 'string'
+    !> Returns an integer
+    elemental function count_string_char(string, pattern, consider_overlapping) result(res)
+        type(string_type), intent(in) :: string
+        character(len=*), intent(in) :: pattern
+        logical, intent(in), optional :: consider_overlapping
+        integer :: res
+
+        res = count(char(string), pattern, consider_overlapping)
+
+    end function count_string_char
+
+    !> Returns the number of times substring 'pattern' has appeared in the
+    !> input string 'string'
+    !> Returns an integer
+    elemental function count_char_string(string, pattern, consider_overlapping) result(res)
+        character(len=*), intent(in) :: string
+        type(string_type), intent(in) :: pattern
+        logical, intent(in), optional :: consider_overlapping
+        integer :: res
+
+        res = count(string, char(pattern), consider_overlapping)
+
+    end function count_char_string
+
+    !> Returns the number of times substring 'pattern' has appeared in the
+    !> input string 'string'
+    !> Returns an integer
+    elemental function count_char_char(string, pattern, consider_overlapping) result(res)
+        character(len=*), intent(in) :: string
+        character(len=*), intent(in) :: pattern
+        logical, intent(in), optional :: consider_overlapping
+        integer :: lps_array(len(pattern))
+        integer :: res, s_i, p_i, length_string, length_pattern
+
+        res = 0
+        length_string = len(string)
+        length_pattern = len(pattern)
+
+        if (length_pattern > 0 .and. length_pattern <= length_string) then
+            lps_array = compute_lps(pattern)
+
+            s_i = 1
+            p_i = 1
+            do while (s_i <= length_string)
+                if (string(s_i:s_i) == pattern(p_i:p_i)) then
+                    if (p_i == length_pattern) then
+                        res = res + 1
+                        if (optval(consider_overlapping, .true.)) then
+                            p_i = lps_array(p_i)
+                        else
+                            p_i = 0
+                        end if
+                    end if
+                    s_i = s_i + 1
+                    p_i = p_i + 1
+                else if (p_i > 1) then
+                    p_i = lps_array(p_i - 1) + 1
+                else
+                    s_i = s_i + 1
+                end if
+            end do
+        end if
+    
+    end function count_char_char
+    
 
 end module stdlib_strings
